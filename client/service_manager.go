@@ -2,6 +2,7 @@ package client
 
 import (
 	"errors"
+	"fmt"
 	"net/http"
 
 	"github.com/ciscoecosystem/dcnm-go-client/container"
@@ -14,15 +15,15 @@ func (c *Client) GetviaURL(endpoint string) (*container.Container, error) {
 		return nil, err
 	}
 
-	obj, resp, err := c.do(req)
+	cont, resp, err := c.do(req)
 	if err != nil {
 		return nil, err
 	}
 
-	if obj == nil {
+	if cont == nil {
 		return nil, errors.New("Empty response body")
 	}
-	return obj, checkforerrors(resp)
+	return cont, checkforerrors(cont, resp)
 }
 
 func (c *Client) Save(endpoint string, obj models.Model) (*container.Container, error) {
@@ -40,7 +41,7 @@ func (c *Client) Save(endpoint string, obj models.Model) (*container.Container, 
 	if err != nil {
 		return nil, err
 	}
-	return cont, checkforerrors(resp)
+	return cont, checkforerrors(cont, resp)
 }
 
 func (c *Client) Update(endpoint string, obj models.Model) (*container.Container, error) {
@@ -58,7 +59,7 @@ func (c *Client) Update(endpoint string, obj models.Model) (*container.Container
 	if err != nil {
 		return nil, err
 	}
-	return cont, checkforerrors(resp)
+	return cont, checkforerrors(cont, resp)
 }
 
 func (c *Client) Delete(endpoint string) (*container.Container, error) {
@@ -71,11 +72,16 @@ func (c *Client) Delete(endpoint string) (*container.Container, error) {
 	if err != nil {
 		return nil, err
 	}
-	return cont, checkforerrors(resp)
+	return cont, checkforerrors(cont, resp)
 }
 
-func checkforerrors(resp *http.Response) error {
-	return nil
+func checkforerrors(cont *container.Container, resp *http.Response) error {
+	if resp.StatusCode == http.StatusOK {
+		return nil
+	} else if resp.StatusCode == 400 {
+		return fmt.Errorf("%s Error : %s", resp.Status, cont.S("message").String())
+	}
+	return fmt.Errorf("%d Error : %s", resp.StatusCode, resp.Status)
 }
 
 func (c *Client) prepareModel(obj models.Model) (*container.Container, error) {
