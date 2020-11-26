@@ -44,6 +44,19 @@ func (c *Client) Save(endpoint string, obj models.Model) (*container.Container, 
 	return cont, checkforerrors(cont, resp)
 }
 
+func (c *Client) GetSegID(endpoint string) (*container.Container, error) {
+	req, err := c.makeRequest("POST", endpoint, nil, true)
+	if err != nil {
+		return nil, err
+	}
+
+	cont, resp, err := c.do(req)
+	if err != nil {
+		return nil, err
+	}
+	return cont, checkforerrors(cont, resp)
+}
+
 func (c *Client) Update(endpoint string, obj models.Model) (*container.Container, error) {
 	jsonPayload, err := c.prepareModel(obj)
 	if err != nil {
