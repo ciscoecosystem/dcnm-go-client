@@ -11,6 +11,30 @@ type VRF struct {
 	Source             string `json:",omitempty"`
 }
 
+type VRFProfileConfig struct {
+	VrfName         string `json:"vrfName"`
+	SegmentID       string `json:"vrfSegmentId"`
+	Vlan            int    `json:"vrfVlanId,omitempty"`
+	Mtu             int    `json:"mtu,omitempty"`
+	Tag             string `json:"tag,omitempty"`
+	VlanName        string `json:"vrfVlanName,omitempty"`
+	Description     string `json:"vrfDescription,omitempty"`
+	IntfDescription string `json:"vrfIntfDescription,omitempty"`
+	BGP             int    `json:"maxBgpPaths,omitempty"`
+	IBGP            int    `json:"maxIbgpPaths,omitempty"`
+	TRM             string `json:"trmEnabled,omitempty"`
+	RPexternal      string `json:"isRPExternal,omitempty"`
+	Lookback        int    `json:"loopbackNumber,omitempty"`
+	RPaddress       string `json:"rpAddress,omitempty"`
+	Mcastaddr       string `json:"L3VniMcastGroup,omitempty"`
+	IPv6Link        string `json:"ipv6LinkLocalFlag,omitempty"`
+	Mcastgroup      string `json:"multicastGroup,omitempty"`
+	TRMBGW          string `json:"trmBGWMSiteEnabled,omitempty"`
+	AdhostRoute     string `json:"advertiseHostRouteFlag,omitempty"`
+	AdDefaultRoute  string `json:"advertiseDefaultRouteFlag,omitempty"`
+	StaticRoute     string `json:"configureStaticDefaultRouteFlag,omitempty"`
+}
+
 func (vrf *VRF) ToMap() (map[string]interface{}, error) {
 	vrfAttributeMap := make(map[string]interface{})
 	A(vrfAttributeMap, "fabric", vrf.Fabric)
