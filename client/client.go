@@ -191,10 +191,7 @@ func (c *Client) do(req *http.Request) (*container.Container, *http.Response, er
 	resp.Body.Close()
 	log.Println("[DEBUG] HTTP Response unique string ", req.Method, req.URL.String(), bodystrings)
 
-	obj, err := container.ParseJSON(bodybytes)
-	if err != nil {
-		return nil, resp, err
-	}
+	obj, _ := container.ParseJSON(bodybytes)
 	log.Println("[DEBUG] Ending Do method ", req.URL.String())
 	return obj, resp, nil
 }
