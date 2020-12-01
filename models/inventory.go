@@ -31,10 +31,11 @@ type Switch struct {
 func NewSwitch(inv *Inventory, s *Switch) *Inventory {
 	switchList := make([]Switch, 0, 1)
 
-	switchList = append(switchList, *s)
+	if s != nil {
+		switchList = append(switchList, *s)
+	}
 
 	(*inv).Switches = switchList
-
 	return inv
 }
 
@@ -89,13 +90,15 @@ func (inv *Inventory) ToMap() (map[string]interface{}, error) {
 
 	A(inventoryMap, "platform", inv.Platform)
 
-	switchList := make([]interface{}, 0, 1)
-	for _, s := range inv.Switches {
-		sMap, _ := s.MakeMap()
+	if len(inv.Switches) > 0 {
+		switchList := make([]interface{}, 0, 1)
+		for _, s := range inv.Switches {
+			sMap, _ := s.MakeMap()
 
-		switchList = append(switchList, sMap)
+			switchList = append(switchList, sMap)
+		}
+		A(inventoryMap, "switches", switchList)
 	}
-	A(inventoryMap, "switches", switchList)
 
 	return inventoryMap, nil
 }
