@@ -44,6 +44,19 @@ func (c *Client) Save(endpoint string, obj models.Model) (*container.Container, 
 	return cont, checkforerrors(cont, resp)
 }
 
+func (c *Client) UpdateCred(endpoint string, body []byte) (*container.Container, error) {
+	req, err := c.makeRequestForCred("POST", endpoint, body, true)
+	if err != nil {
+		return nil, err
+	}
+
+	cont, resp, err := c.do(req)
+	if err != nil {
+		return nil, err
+	}
+	return cont, checkforerrors(cont, resp)
+}
+
 func (c *Client) GetSegID(endpoint string) (*container.Container, error) {
 	req, err := c.makeRequest("POST", endpoint, nil, true)
 	if err != nil {
