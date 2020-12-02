@@ -23,7 +23,7 @@ func (au *auth) isValid() bool {
 }
 
 func (au *auth) calculateExpiry(expiry int64) {
-	au.expiry = time.Unix((time.Now().Unix() + expiry), 0)
+	au.expiry = time.Unix((time.Now().Unix() + expiry/1000), 0)
 }
 
 func (client *Client) injectAuthenticationHeader(req *http.Request, path string) (*http.Request, error) {
