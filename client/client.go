@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"crypto/tls"
 	b64 "encoding/base64"
-	"errors"
 	"fmt"
 	"io/ioutil"
 	"log"
@@ -183,9 +182,16 @@ func (c *Client) authenticate() error {
 	}
 	req.Header.Set("Authorization", fmt.Sprintf("Basic %s", getBasicAuth(c.username, c.password)))
 
-	obj, _, err := c.do(req)
+	obj, resp, err := c.do(req)
 	if err != nil {
-		return errors.New("Invalid username or password")
+		return err
+	}
+	if resp.StatusCode == 500 {
+		bodybytes, err := ioutil.ReadAll(resp.Body)
+		if err != nil {
+			return err
+		}
+		return fmt.Errorf(string(bodybytes))
 	}
 
 	token := models.StripQuotes(obj.S("Dcnm-Token").String())
