@@ -218,7 +218,11 @@ func (c *Client) do(req *http.Request) (*container.Container, *http.Response, er
 	resp.Body.Close()
 	log.Println("[DEBUG] HTTP Response unique string ", req.Method, req.URL.String(), bodystrings)
 
-	obj, _ := container.ParseJSON(bodybytes)
+	obj, err := container.ParseJSON(bodybytes)
+	if err != nil && resp.StatusCode != 200 {
+		return nil, nil, fmt.Errorf(bodystrings)
+	}
+
 	log.Println("[DEBUG] Ending Do method ", req.URL.String())
 	return obj, resp, nil
 }
