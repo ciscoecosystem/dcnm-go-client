@@ -187,11 +187,7 @@ func (c *Client) authenticate() error {
 		return err
 	}
 	if resp.StatusCode == 500 {
-		bodybytes, err := ioutil.ReadAll(resp.Body)
-		if err != nil {
-			return err
-		}
-		return fmt.Errorf(string(bodybytes))
+		return fmt.Errorf("Invalid username or password")
 	}
 
 	token := models.StripQuotes(obj.S("Dcnm-Token").String())
