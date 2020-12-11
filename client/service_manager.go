@@ -104,10 +104,9 @@ func (c *Client) Delete(endpoint string) (*container.Container, error) {
 func checkforerrors(cont *container.Container, resp *http.Response) error {
 	if resp.StatusCode == http.StatusOK {
 		return nil
-	} else if resp.StatusCode == 400 {
-		return fmt.Errorf("%s Error : %s", resp.Status, cont.S("message").String())
 	}
-	return fmt.Errorf("%d Error : %s", resp.StatusCode, resp.Status)
+
+	return fmt.Errorf("%d Error : %s", resp.StatusCode, cont.S("message").String())
 }
 
 func (c *Client) prepareModel(obj models.Model) (*container.Container, error) {
