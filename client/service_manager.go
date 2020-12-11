@@ -106,7 +106,7 @@ func checkforerrors(cont *container.Container, resp *http.Response) error {
 		return nil
 	}
 
-	return fmt.Errorf("%s Error : %s", resp.Status, cont.S("message").String())
+	return fmt.Errorf("%d Error : %s", resp.StatusCode, cont.S("message").String())
 }
 
 func (c *Client) prepareModel(obj models.Model) (*container.Container, error) {
