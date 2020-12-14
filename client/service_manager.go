@@ -101,6 +101,20 @@ func (c *Client) Delete(endpoint string) (*container.Container, error) {
 	return cont, checkforerrors(cont, resp)
 }
 
+func (c *Client) SaveAndDeploy(endpoint string) (*container.Container, error) {
+	req, err := c.makeRequest("POST", endpoint, nil, true)
+	if err != nil {
+		return nil, err
+	}
+
+	cont, resp, err := c.do(req)
+	if err != nil {
+		return nil, err
+	}
+
+	return cont, checkforerrors(cont, resp)
+}
+
 func checkforerrors(cont *container.Container, resp *http.Response) error {
 	if resp.StatusCode == http.StatusOK {
 		return nil
