@@ -25,18 +25,18 @@ type NetworkProfileConfig struct {
 	Description     string `json:"intfDescription,omitempty"`
 	SecondaryGate1  string `json:"secondaryGW1,omitempty"`
 	SecondaryGate2  string `json:"secondaryGW2,omitempty"`
-	ARPSuppFlag     string `json:"suppressArp,omitempty"`
-	IRFlag          string `json:"enableIR,omitempty"`
+	ARPSuppFlag     bool   `json:"suppressArp,omitempty"`
+	IRFlag          bool   `json:"enableIR,omitempty"`
 	McastGroup      string `json:"mcastGroup,omitempty"`
 	DHCPServer1     string `json:"dhcpServerAddr1,omitempty"`
 	DHCPServer2     string `json:"dhcpServerAddr2,omitempty"`
 	DHCPServerVRF   string `json:"vrfDhcp,omitempty"`
 	LookbackID      int    `json:"loopbackId,omitempty"`
 	Tag             string `json:"tag,omitempty"`
-	TRMEnable       string `json:"trmEnabled,omitempty"`
-	RTBothFlag      string `json:"rtBothAuto,omitempty"`
-	L3GatewayEnable string `json:"enableL3OnBorder,omitempty"`
-	L2OnlyFlag      string `json:"isLayer2Only,omitempty"`
+	TRMEnable       bool   `json:"trmEnabled,omitempty"`
+	RTBothFlag      bool   `json:"rtBothAuto,omitempty"`
+	L3GatewayEnable bool   `json:"enableL3OnBorder,omitempty"`
+	L2OnlyFlag      bool   `json:"isLayer2Only,omitempty"`
 }
 
 func (network *Network) ToMap() (map[string]interface{}, error) {
