@@ -5,17 +5,6 @@ type VRFAttach struct {
 	AttachList interface{} `json:",omitempty"`
 }
 
-type IANAttachment struct {
-	Fabric         string `json:"fabric,omitempty"`
-	VRFName        string `json:"vrfName,omitempty"`
-	SerialNumber   string `json:"serialNumber,omitempty"`
-	Vlan           int    `json:"vlan,omitempty"`
-	FreefromConfig string `json:"freeformConfig,omitempty"`
-	Deploy         bool   `json:"deployment,omitempty"`
-	ExtensionValue string `json:"extensionValues,omitempty"`
-	InstanceValue  string `json:"instanceValues,omitempty"`
-}
-
 type VRFInstance struct {
 	LookbackID   int    `json:"loopbackId,omitempty"`
 	LoopbackIpv4 string `json:"loopbackIpAddress,omitempty"`
@@ -26,7 +15,7 @@ type VRFDeploy struct {
 	Name string `json:",omitempty"`
 }
 
-func NewVRFAttachment(vrfName string, ianAttach []IANAttachment) *VRFAttach {
+func NewVRFAttachment(vrfName string, ianAttach []map[string]interface{}) *VRFAttach {
 	vrfAttach := VRFAttach{}
 
 	vrfAttach.Name = vrfName
