@@ -6,14 +6,14 @@ type VRFAttach struct {
 }
 
 type IANAttachment struct {
-	Fabric         string `json:",omitempty"`
-	VRFName        string `json:",omitempty"`
-	SerialNumber   string `json:",omitempty"`
-	Vlan           int    `json:",omitempty"`
-	FreefromConfig string `json:",omitempty"`
-	Deploy         bool   `json:",omitempty"`
-	ExtensionValue string `json:",omitempty"`
-	InstanceValue  string `json:",omitempty"`
+	Fabric         string `json:"fabric,omitempty"`
+	VRFName        string `json:"vrfName,omitempty"`
+	SerialNumber   string `json:"serialNumber,omitempty"`
+	Vlan           int    `json:"vlan,omitempty"`
+	FreefromConfig string `json:"freeformConfig,omitempty"`
+	Deploy         bool   `json:"deployment,omitempty"`
+	ExtensionValue string `json:"extensionValues,omitempty"`
+	InstanceValue  string `json:"instanceValues,omitempty"`
 }
 
 type VRFInstance struct {
