@@ -44,6 +44,28 @@ func (c *Client) Save(endpoint string, obj models.Model) (*container.Container, 
 	return cont, checkforerrors(cont, resp)
 }
 
+func (c *Client) SaveForAttachment(endpoint string, obj models.Model) (*container.Container, error) {
+	contList := container.New()
+	contList.Array()
+
+	jsonPayload, err := c.prepareModel(obj)
+	if err != nil {
+		return nil, err
+	}
+	contList.ArrayAppend(jsonPayload.Data())
+
+	req, err := c.makeRequest("POST", endpoint, contList, true)
+	if err != nil {
+		return nil, err
+	}
+
+	cont, resp, err := c.do(req)
+	if err != nil {
+		return nil, err
+	}
+	return cont, checkforerrors(cont, resp)
+}
+
 func (c *Client) UpdateCred(endpoint string, body []byte) (*container.Container, error) {
 	req, err := c.makeRequestForCred("POST", endpoint, body, true)
 	if err != nil {
@@ -98,6 +120,20 @@ func (c *Client) Delete(endpoint string) (*container.Container, error) {
 	if err != nil {
 		return nil, err
 	}
+	return cont, checkforerrors(cont, resp)
+}
+
+func (c *Client) SaveAndDeploy(endpoint string) (*container.Container, error) {
+	req, err := c.makeRequest("POST", endpoint, nil, true)
+	if err != nil {
+		return nil, err
+	}
+
+	cont, resp, err := c.do(req)
+	if err != nil {
+		return nil, err
+	}
+
 	return cont, checkforerrors(cont, resp)
 }
 
