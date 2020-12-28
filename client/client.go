@@ -122,7 +122,7 @@ func (c *Client) makeRequest(method, path string, body *container.Container, aut
 	reqURL := c.baseURL.ResolveReference(url)
 
 	var req *http.Request
-	if method == "GET" || method == "DELETE" {
+	if body == nil {
 		req, err = http.NewRequest(method, reqURL.String(), nil)
 	} else {
 		req, err = http.NewRequest(method, reqURL.String(), bytes.NewBuffer(body.Bytes()))
