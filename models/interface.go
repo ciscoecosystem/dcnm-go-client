@@ -15,6 +15,11 @@ type InterfaceConfig struct {
 	NVPairs       interface{} `json:",omitempty"`
 }
 
+type InterfaceDelete struct {
+	SerialNumber string `json:",omitempty"`
+	Name         string `json:",omitempty"`
+}
+
 func NewInterface(intf *Interface, intfConf *InterfaceConfig, nvPairs map[string]interface{}) *Interface {
 	intfList := make([]InterfaceConfig, 0, 1)
 
@@ -68,4 +73,14 @@ func (intf *Interface) ToMap() (map[string]interface{}, error) {
 	}
 
 	return interfaceMap, nil
+}
+
+func (intfDel *InterfaceDelete) ToMap() (map[string]interface{}, error) {
+	intfDelMap := make(map[string]interface{})
+
+	A(intfDelMap, "serialNumber", intfDel.SerialNumber)
+
+	A(intfDelMap, "ifName", intfDel.Name)
+
+	return intfDelMap, nil
 }

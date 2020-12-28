@@ -123,6 +123,28 @@ func (c *Client) Delete(endpoint string) (*container.Container, error) {
 	return cont, checkforerrors(cont, resp)
 }
 
+func (c *Client) DeleteWithPayload(endpoint string, obj models.Model) (*container.Container, error) {
+	contList := container.New()
+	contList.Array()
+
+	jsonPayload, err := c.prepareModel(obj)
+	if err != nil {
+		return nil, err
+	}
+	contList.ArrayAppend(jsonPayload.Data())
+
+	req, err := c.makeRequest("DELETE", endpoint, contList, true)
+	if err != nil {
+		return nil, err
+	}
+
+	cont, resp, err := c.do(req)
+	if err != nil {
+		return nil, err
+	}
+	return cont, checkforerrors(cont, resp)
+}
+
 func (c *Client) SaveAndDeploy(endpoint string) (*container.Container, error) {
 	req, err := c.makeRequest("POST", endpoint, nil, true)
 	if err != nil {
