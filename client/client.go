@@ -114,7 +114,7 @@ func GetClient(clientURL, username, password string, expiry int64, options ...Op
 	return clientImpl
 }
 
-func (c *Client) makeRequest(method, path string, body *container.Container, authenticated bool) (*http.Request, error) {
+func (c *Client) MakeRequest(method, path string, body *container.Container, authenticated bool) (*http.Request, error) {
 	url, err := url.Parse(path)
 	if err != nil {
 		return nil, err
@@ -176,13 +176,13 @@ func (c *Client) authenticate() error {
 		return err
 	}
 
-	req, err := c.makeRequest(method, path, body, false)
+	req, err := c.MakeRequest(method, path, body, false)
 	if err != nil {
 		return err
 	}
 	req.Header.Set("Authorization", fmt.Sprintf("Basic %s", getBasicAuth(c.username, c.password)))
 
-	obj, resp, err := c.do(req)
+	obj, resp, err := c.Do(req)
 	if err != nil {
 		return err
 	}
@@ -200,7 +200,7 @@ func (c *Client) authenticate() error {
 	return nil
 }
 
-func (c *Client) do(req *http.Request) (*container.Container, *http.Response, error) {
+func (c *Client) Do(req *http.Request) (*container.Container, *http.Response, error) {
 	log.Println("[DEBUG] Begining Do method ", req.URL.String())
 
 	resp, err := c.httpClient.Do(req)
