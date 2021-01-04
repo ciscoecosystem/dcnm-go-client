@@ -220,7 +220,7 @@ func (c *Client) Do(req *http.Request) (*container.Container, *http.Response, er
 
 	obj, err := container.ParseJSON(bodybytes)
 	if err != nil && resp.StatusCode != 200 {
-		return nil, nil, fmt.Errorf(bodystrings)
+		return nil, resp, fmt.Errorf(bodystrings)
 	}
 
 	log.Println("[DEBUG] Ending Do method ", req.URL.String())
