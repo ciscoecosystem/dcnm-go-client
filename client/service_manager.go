@@ -10,12 +10,12 @@ import (
 )
 
 func (c *Client) GetviaURL(endpoint string) (*container.Container, error) {
-	req, err := c.makeRequest("GET", endpoint, nil, true)
+	req, err := c.MakeRequest("GET", endpoint, nil, true)
 	if err != nil {
 		return nil, err
 	}
 
-	cont, resp, err := c.do(req)
+	cont, resp, err := c.Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -32,12 +32,12 @@ func (c *Client) Save(endpoint string, obj models.Model) (*container.Container, 
 		return nil, err
 	}
 
-	req, err := c.makeRequest("POST", endpoint, jsonPayload, true)
+	req, err := c.MakeRequest("POST", endpoint, jsonPayload, true)
 	if err != nil {
 		return nil, err
 	}
 
-	cont, resp, err := c.do(req)
+	cont, resp, err := c.Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -54,12 +54,12 @@ func (c *Client) SaveForAttachment(endpoint string, obj models.Model) (*containe
 	}
 	contList.ArrayAppend(jsonPayload.Data())
 
-	req, err := c.makeRequest("POST", endpoint, contList, true)
+	req, err := c.MakeRequest("POST", endpoint, contList, true)
 	if err != nil {
 		return nil, err
 	}
 
-	cont, resp, err := c.do(req)
+	cont, resp, err := c.Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -72,7 +72,7 @@ func (c *Client) UpdateCred(endpoint string, body []byte) (*container.Container,
 		return nil, err
 	}
 
-	cont, resp, err := c.do(req)
+	cont, resp, err := c.Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -80,12 +80,12 @@ func (c *Client) UpdateCred(endpoint string, body []byte) (*container.Container,
 }
 
 func (c *Client) GetSegID(endpoint string) (*container.Container, error) {
-	req, err := c.makeRequest("POST", endpoint, nil, true)
+	req, err := c.MakeRequest("POST", endpoint, nil, true)
 	if err != nil {
 		return nil, err
 	}
 
-	cont, resp, err := c.do(req)
+	cont, resp, err := c.Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -98,12 +98,12 @@ func (c *Client) Update(endpoint string, obj models.Model) (*container.Container
 		return nil, err
 	}
 
-	req, err := c.makeRequest("PUT", endpoint, jsonPayload, true)
+	req, err := c.MakeRequest("PUT", endpoint, jsonPayload, true)
 	if err != nil {
 		return nil, err
 	}
 
-	cont, resp, err := c.do(req)
+	cont, resp, err := c.Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -111,12 +111,34 @@ func (c *Client) Update(endpoint string, obj models.Model) (*container.Container
 }
 
 func (c *Client) Delete(endpoint string) (*container.Container, error) {
-	req, err := c.makeRequest("DELETE", endpoint, nil, true)
+	req, err := c.MakeRequest("DELETE", endpoint, nil, true)
 	if err != nil {
 		return nil, err
 	}
 
-	cont, resp, err := c.do(req)
+	cont, resp, err := c.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	return cont, checkforerrors(cont, resp)
+}
+
+func (c *Client) DeleteWithPayload(endpoint string, obj models.Model) (*container.Container, error) {
+	contList := container.New()
+	contList.Array()
+
+	jsonPayload, err := c.prepareModel(obj)
+	if err != nil {
+		return nil, err
+	}
+	contList.ArrayAppend(jsonPayload.Data())
+
+	req, err := c.MakeRequest("DELETE", endpoint, contList, true)
+	if err != nil {
+		return nil, err
+	}
+
+	cont, resp, err := c.Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -124,12 +146,12 @@ func (c *Client) Delete(endpoint string) (*container.Container, error) {
 }
 
 func (c *Client) SaveAndDeploy(endpoint string) (*container.Container, error) {
-	req, err := c.makeRequest("POST", endpoint, nil, true)
+	req, err := c.MakeRequest("POST", endpoint, nil, true)
 	if err != nil {
 		return nil, err
 	}
 
-	cont, resp, err := c.do(req)
+	cont, resp, err := c.Do(req)
 	if err != nil {
 		return nil, err
 	}

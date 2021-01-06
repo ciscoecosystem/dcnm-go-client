@@ -114,7 +114,7 @@ func GetClient(clientURL, username, password string, expiry int64, options ...Op
 	return clientImpl
 }
 
-func (c *Client) makeRequest(method, path string, body *container.Container, authenticated bool) (*http.Request, error) {
+func (c *Client) MakeRequest(method, path string, body *container.Container, authenticated bool) (*http.Request, error) {
 	url, err := url.Parse(path)
 	if err != nil {
 		return nil, err
@@ -122,7 +122,7 @@ func (c *Client) makeRequest(method, path string, body *container.Container, aut
 	reqURL := c.baseURL.ResolveReference(url)
 
 	var req *http.Request
-	if method == "GET" || method == "DELETE" {
+	if body == nil {
 		req, err = http.NewRequest(method, reqURL.String(), nil)
 	} else {
 		req, err = http.NewRequest(method, reqURL.String(), bytes.NewBuffer(body.Bytes()))
@@ -176,13 +176,13 @@ func (c *Client) authenticate() error {
 		return err
 	}
 
-	req, err := c.makeRequest(method, path, body, false)
+	req, err := c.MakeRequest(method, path, body, false)
 	if err != nil {
 		return err
 	}
 	req.Header.Set("Authorization", fmt.Sprintf("Basic %s", getBasicAuth(c.username, c.password)))
 
-	obj, resp, err := c.do(req)
+	obj, resp, err := c.Do(req)
 	if err != nil {
 		return err
 	}
@@ -200,7 +200,7 @@ func (c *Client) authenticate() error {
 	return nil
 }
 
-func (c *Client) do(req *http.Request) (*container.Container, *http.Response, error) {
+func (c *Client) Do(req *http.Request) (*container.Container, *http.Response, error) {
 	log.Println("[DEBUG] Begining Do method ", req.URL.String())
 
 	resp, err := c.httpClient.Do(req)
@@ -220,7 +220,7 @@ func (c *Client) do(req *http.Request) (*container.Container, *http.Response, er
 
 	obj, err := container.ParseJSON(bodybytes)
 	if err != nil && resp.StatusCode != 200 {
-		return nil, nil, fmt.Errorf(bodystrings)
+		return nil, resp, fmt.Errorf(bodystrings)
 	}
 
 	log.Println("[DEBUG] Ending Do method ", req.URL.String())
