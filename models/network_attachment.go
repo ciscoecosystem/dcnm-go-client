@@ -22,9 +22,9 @@ func NewNetworkAttachment(networkName string, ianAttach []map[string]interface{}
 func (networkAttach *NetworkAttach) ToMap() (map[string]interface{}, error) {
 	networkAttachMap := make(map[string]interface{})
 
-	A(networkAttachMap, "lanAttachList", networkAttach.Name)
+	A(networkAttachMap, "networkName", networkAttach.Name)
 
-	A(networkAttachMap, "networkName", networkAttach.AttachList)
+	A(networkAttachMap, "lanAttachList", networkAttach.AttachList)
 
 	return networkAttachMap, nil
 }
