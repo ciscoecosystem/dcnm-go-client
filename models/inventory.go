@@ -28,6 +28,11 @@ type Switch struct {
 	StatReason  string `json:",omitempty"`
 }
 
+type SwitchRole struct {
+	SerialNumber string `json:",omitempty"`
+	Role         string `json:",omitempty"`
+}
+
 func NewSwitch(inv *Inventory, s *Switch) *Inventory {
 	switchList := make([]Switch, 0, 1)
 
@@ -101,4 +106,14 @@ func (inv *Inventory) ToMap() (map[string]interface{}, error) {
 	}
 
 	return inventoryMap, nil
+}
+
+func (sRole *SwitchRole) ToMap() (map[string]interface{}, error) {
+	sroleMap := make(map[string]interface{})
+
+	A(sroleMap, "serialNumber", sRole.SerialNumber)
+
+	A(sroleMap, "role", sRole.Role)
+
+	return sroleMap, nil
 }
