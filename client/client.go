@@ -218,7 +218,7 @@ func (c *Client) authenticate() error {
 		if c.authToken == nil {
 			c.authToken = &auth{}
 		}
-		c.authToken.token = stripQuotes(token)
+		c.authToken.token = token
 		c.authToken.calculateExpiry(1200)
 
 	} else {
@@ -287,11 +287,4 @@ func getBasicAuth(username, password string) string {
 	encodedString := b64.StdEncoding.EncodeToString([]byte(authString))
 
 	return encodedString
-}
-
-func stripQuotes(word string) string {
-	if strings.HasPrefix(word, "\"") && strings.HasSuffix(word, "\"") {
-		return strings.TrimSuffix(strings.TrimPrefix(word, "\""), "\"")
-	}
-	return word
 }
