@@ -9,7 +9,6 @@ import (
 	"log"
 	"net/http"
 	"net/url"
-	"strings"
 
 	"github.com/ciscoecosystem/dcnm-go-client/container"
 	"github.com/ciscoecosystem/dcnm-go-client/models"
