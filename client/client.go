@@ -59,6 +59,10 @@ func Platform(platform string) Option {
 	}
 }
 
+func (c *Client) GetPlatform() string {
+	return c.platform
+}
+
 func (c *Client) useInsecureHTTPClient(insecure bool) *http.Transport {
 
 	transport := &http.Transport{
