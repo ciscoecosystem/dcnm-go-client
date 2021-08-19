@@ -1,24 +1,23 @@
 package models
 
 type ServicePolicy struct {
-	PolicyName             		    string `json:",omitempty"`
-	FabricName               		string `json:",omitempty"`
-	AttachedFabricName              string `json:",omitempty"`
-	DestinationNetwork           	string `json:",omitempty"`
-	DestinationVrfName 				string `json:",omitempty"`
-	Enabled 						bool `json:",omitempty"`
-	NextHopIp          				string `json:",omitempty"`
-	PeeringName 					string `json:",omitempty"`
-	PolicyTemplateName 				string `json:",omitempty"`
-	ReverseEnabled             		bool `json:",omitempty"`
-	ReverseNextHopIp             	string `json:",omitempty"`
-	ServiceNodeName              	string `json:",omitempty"`
-	ServiceNodeType           		string `json:",omitempty"`
-	SourceNetwork          			string `json:",omitempty"`
-	SourceVrfName        			string `json:",omitempty"`
-	Status                          string `json:",omitempty"`
-	NvPairs							interface{} `json:",omitempty"`
-
+	PolicyName         string      `json:",omitempty"`
+	FabricName         string      `json:",omitempty"`
+	AttachedFabricName string      `json:",omitempty"`
+	DestinationNetwork string      `json:",omitempty"`
+	DestinationVrfName string      `json:",omitempty"`
+	Enabled            bool        `json:",omitempty"`
+	NextHopIp          string      `json:",omitempty"`
+	PeeringName        string      `json:",omitempty"`
+	PolicyTemplateName string      `json:",omitempty"`
+	ReverseEnabled     bool        `json:",omitempty"`
+	ReverseNextHopIp   string      `json:",omitempty"`
+	ServiceNodeName    string      `json:",omitempty"`
+	ServiceNodeType    string      `json:",omitempty"`
+	SourceNetwork      string      `json:",omitempty"`
+	SourceVrfName      string      `json:",omitempty"`
+	Status             string      `json:",omitempty"`
+	NvPairs            interface{} `json:",omitempty"`
 }
 
 func (servicepolicy *ServicePolicy) ToMap() (map[string]interface{}, error) {
@@ -40,7 +39,10 @@ func (servicepolicy *ServicePolicy) ToMap() (map[string]interface{}, error) {
 	A(servicepolicyAttributeMap, "sourceNetwork", servicepolicy.SourceNetwork)
 	A(servicepolicyAttributeMap, "sourceVrfName", servicepolicy.SourceVrfName)
 	A(servicepolicyAttributeMap, "status", servicepolicy.Status)
-	A(servicepolicyAttributeMap, "nvPairs", servicepolicy.NvPairs)
 
-	return servicepolicyAttributeMap,nil
-}	
+	if servicepolicy.NvPairs != nil {
+		A(servicepolicyAttributeMap, "nvPairs", servicepolicy.NvPairs)
+	}
+
+	return servicepolicyAttributeMap, nil
+}
